@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const router = express_1.default.Router();
+const subadmin_1 = require("../controllers/subadmin");
+const checkSubadmin_1 = require("../middlewares/checkSubadmin");
+const auth_1 = require("../middlewares/auth");
+const joivalidation_1 = require("../joivalidation");
+router.post('/login', joivalidation_1.validateLoginDetails, subadmin_1.login);
+router.post('/create/user', auth_1.authToken, checkSubadmin_1.isSubAdmin, joivalidation_1.validateAddMember, subadmin_1.createUser);
+router.post('/add-restaurant', auth_1.authToken, checkSubadmin_1.isSubAdmin, joivalidation_1.validateAddRestaurant, subadmin_1.AddRestaurant);
+router.post('/:res_id/add-dish', auth_1.authToken, checkSubadmin_1.isSubAdmin, joivalidation_1.validateAddDish, auth_1.authToken, subadmin_1.addDish);
+router.get('/get-all-restaurants', auth_1.authToken, checkSubadmin_1.isSubAdmin, subadmin_1.getAllRestaurants);
+router.get('/:res_id/get-all-dishes', auth_1.authToken, checkSubadmin_1.isSubAdmin, subadmin_1.getAllDishes);
+router.get('/get-all-users', auth_1.authToken, checkSubadmin_1.isSubAdmin, subadmin_1.getAllUsers);
+router.get('/logout', auth_1.authToken, checkSubadmin_1.isSubAdmin, subadmin_1.logout);
+exports.default = router;
